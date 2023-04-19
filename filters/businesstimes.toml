@@ -1,0 +1,6 @@
+host = "www.businesstimes.com.sg"
+path = "-"
+title = "h1.headline"
+thumb = "img.ms-item__img"
+body = "div.paragraph--type-text > p"
+skip_children = false

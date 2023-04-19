@@ -1,0 +1,6 @@
+host = "www.straitstimes.com"
+path = "/singapore/"
+title = "h1.headline"
+thumb = "img.ms-item__img"
+body = "div.article-content-rawhtml div:last-child p"
+skip_children = false

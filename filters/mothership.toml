@@ -1,0 +1,6 @@
+host = "mothership.sg"
+path = "-"
+title = "div.header h1[style]"
+thumb = "img.ms-item__img"
+body = "div.content-article-wrap > p"
+skip_children = false

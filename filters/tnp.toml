@@ -1,0 +1,6 @@
+host = "tnp.straitstimes.com"
+path = "-"
+title = "h1.story-headline"
+thumb = "img.ms-item__img"
+body = "div.body-copy > p"
+skip_children = false

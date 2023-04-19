@@ -1,0 +1,6 @@
+host = "www.ricemedia.co"
+path = "-"
+title = "h1.article-title"
+thumb = "img.ms-item__img"
+body = "div.article-content > p"
+skip_children = false
