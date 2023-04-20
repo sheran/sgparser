@@ -1,0 +1,7 @@
+host = "theindependent.sg"
+path = "-"
+title = "h2.tdb-title-text"
+thumb = "img.ms-item__img"
+body = "div.td-post-content > div.tdb-block-inner > p"
+skip_text = ["ALSO READ"]
+skip_children = false
