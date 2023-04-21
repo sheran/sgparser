@@ -1,5 +1,5 @@
 host = "www.channelnewsasia.com"
-path = "/singapore/"
+path = "-"
 title = "h1.h1--page-title"
 thumb = "img.ms-item__img"
 body = "div.text-long > p"

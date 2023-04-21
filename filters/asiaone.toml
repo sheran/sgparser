@@ -1,5 +1,5 @@
 host = "www.asiaone.com"
-path = "/singapore/"
+path = "-"
 title = "h1.title"
 thumb = "img.ms-item__img"
 body = "div.body > p"

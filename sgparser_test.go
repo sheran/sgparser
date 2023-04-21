@@ -11,7 +11,7 @@ import (
 
 func TestBareToml(t *testing.T) {
 	list := LoadToml("filters")
-	url := "https://sg.news.yahoo.com/lgbt-party-canceled-due-singapore-081727626.html?guccounter=1"
+	url := "https://www.theonlinecitizen.com/2023/04/20/singaporean-activist-and-human-rights-lawyer-raise-concerns-over-impending-execution-amid-troubling-case-detail/"
 	bodytoml, err := Process(url, list)
 	if err != nil {
 		panic(err)

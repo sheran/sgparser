@@ -1,0 +1,6 @@
+host = "www.theonlinecitizen.com"
+path = "-"
+title = "h1.entry-title"
+thumb = "img.ms-item__img"
+body = "div.td-post-content > p"
+skip_children = false
