@@ -2,6 +2,7 @@ package sgparser
 
 import (
 	"context"
+	"log"
 	"strings"
 
 	"github.com/chromedp/chromedp"
@@ -25,7 +26,14 @@ type BrowserImpl struct {
 
 func (b *BrowserImpl) Run(urlToFetch string) string {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("enable-automation", false),
+		chromedp.Flag("disable-gpu", true),
 		chromedp.Flag("disable-dev-shm-usage", true),
+		chromedp.Flag("disable-extensions", true),
+		chromedp.Flag("disable-browser-side-navigation", true),
+		chromedp.Flag("disable-infobars", true),
+		chromedp.Flag("disable-default-apps", true),
+		chromedp.Flag("no-first-run", true),
 		chromedp.Flag("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"),
 	)
 
@@ -33,7 +41,10 @@ func (b *BrowserImpl) Run(urlToFetch string) string {
 	defer cancel()
 
 	// Create a new tab
-	ctx, cancel = chromedp.NewContext(ctx)
+	ctx, cancel = chromedp.NewContext(
+		ctx,
+		chromedp.WithDebugf(log.Printf),
+	)
 	defer cancel()
 	var pageTitle string
 	err := chromedp.Run(ctx,
