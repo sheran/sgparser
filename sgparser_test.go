@@ -1,8 +1,11 @@
 package sgparser
 
 import (
+	"bufio"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 
@@ -22,6 +25,44 @@ func TestBareToml(t *testing.T) {
 	} else {
 		fmt.Println("empty body")
 	}
+}
+
+func TestCDP(t *testing.T) {
+	list := LoadCDP("filters")
+	// Open the text file
+	file, err := os.Open("testurls.txt")
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+	defer file.Close()
+
+	// Create an empty array to store the lines
+	var lines []string
+
+	// Create a scanner to read the file line by line
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		// Add each line to the array
+		lines = append(lines, scanner.Text())
+	}
+
+	// Check for any errors during scanning
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+
+	// Print the lines
+	for _, line := range lines {
+		output, err := Browse(line, list)
+		if err != nil {
+			log.Printf("errur %s\n", err.Error())
+			continue
+		}
+		fmt.Println(output)
+	}
+
 }
 
 func TestHTML(t *testing.T) {

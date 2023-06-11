@@ -19,6 +19,13 @@ type Filter interface {
 	GetHost() string
 }
 
+type Browser interface {
+	Run(string) string
+	Match(string) bool
+	Snippet(string) bool
+	GetHost() string
+}
+
 func LoadToml(dir string) []Filter {
 	log.Println("loading filters...")
 	list := make([]Filter, 0)
@@ -40,6 +47,49 @@ func LoadToml(dir string) []Filter {
 		}
 	}
 	return list
+}
+
+func LoadCDP(dir string) []Browser {
+	log.Println("loading filters...")
+	list := make([]Browser, 0)
+
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, file := range entries {
+		if filepath.Ext(file.Name()) == ".toml" {
+			var bl BrowserImpl
+			log.Printf("[+] %s/%s\n", dir, file.Name())
+			_, err := toml.DecodeFile(fmt.Sprintf("%s/%s", dir, file.Name()), &bl)
+			if err != nil {
+				panic(err)
+			}
+			list = append(list, &bl)
+		}
+	}
+	return list
+}
+
+func Browse(page string, list []Browser) (string, error) {
+	link, err := url.ParseRequestURI(page)
+	if err != nil {
+		return "", err
+	}
+	var output string
+	for _, filter := range list {
+		if link.Host != "" {
+			if filter.Match(link.Host) {
+				log.Printf("got host: %s\n", link.Host)
+				if filter.Snippet(link.Path) {
+					output = filter.Run(page)
+				}
+			}
+		}
+
+	}
+	return output, nil
 }
 
 func Process(page string, list []Filter) (*models.Post, error) {
