@@ -1,6 +1,6 @@
 host = "tnp.straitstimes.com"
 path = "-"
 title = "h1.story-headline"
-thumb = "img.ms-item__img"
+thumb = "div.content-block img.img-responsive"
 body = "div.body-copy > p"
 skip_children = false

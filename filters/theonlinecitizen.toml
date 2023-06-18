@@ -1,6 +1,6 @@
 host = "www.theonlinecitizen.com"
 path = "-"
-title = "h1.entry-title"
-thumb = "img.ms-item__img"
-body = "div.td-post-content > p"
+title = "h1.tdb-title-text"
+thumb = "div.tdb-block-inner img.entry-thumb"
+body = "div.tdb-block-inner > p"
 skip_children = false

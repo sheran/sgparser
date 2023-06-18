@@ -1,7 +1,7 @@
 host = "sg.news.yahoo.com"
 path = "-"
 title = "h1[data-test-locator='headline']"
-thumb = "img.ms-item__img"
+thumb = "div.caas-body img.cass-img"
 body = "div.caas-body > p"
 skip_text = ["Other stories you should check out"]
 skip_children = false

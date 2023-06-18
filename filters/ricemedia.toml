@@ -1,6 +1,6 @@
 host = "www.ricemedia.co"
 path = "-"
 title = "h1.article-title"
-thumb = "img.ms-item__img"
+thumb = "div.article-header img.article-thumbnail"
 body = "div.article-content > p"
 skip_children = false

@@ -1,7 +1,7 @@
 host = "www.cnbc.com"
 path = "-"
 title = "h1.ArticleHeader-headline"
-thumb = "img.ms-item__img"
+thumb = "div.InlineImage-wrapper img"
 body = "div.ArticleBody-articleBody > div.group > p"
 skip_text = []
 skip_children = false

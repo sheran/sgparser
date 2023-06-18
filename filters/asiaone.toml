@@ -1,7 +1,7 @@
 host = "www.asiaone.com"
 path = "-"
 title = "h1.title"
-thumb = "img.ms-item__img"
+thumb = "div.article-top img"
 body = "div.body > p"
 skip_text = ["ALSO READ"]
 skip_children = false

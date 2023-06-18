@@ -1,6 +1,6 @@
 host = "www.straitstimes.com"
 path = "-"
 title = "h1.headline"
-thumb = "img.ms-item__img"
-body = "div.article-content-rawhtml div:last-child p"
+thumb = "div.layout img"
+body = "div.article-content-rawhtml div:last-child p:not(.primary-description, .paywall-header)"
 skip_children = false

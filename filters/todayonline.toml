@@ -1,6 +1,6 @@
 host = "www.todayonline.com"
 path = "-"
 title = "h1.h1--page-title"
-thumb = "img.ms-item__img"
+thumb = "section.detail-hero-media img"
 body = "div.text-long > p"
 skip_children = false

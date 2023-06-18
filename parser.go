@@ -20,7 +20,7 @@ type Filter interface {
 }
 
 type Browser interface {
-	Run(string) string
+	Run(string) (*models.Post, error)
 	Match(string) bool
 	Snippet(string) bool
 	GetHost() string
@@ -72,18 +72,21 @@ func LoadCDP(dir string) []Browser {
 	return list
 }
 
-func Browse(page string, list []Browser) (string, error) {
+func Browse(page string, list []Browser) (*models.Post, error) {
 	link, err := url.ParseRequestURI(page)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	var output string
+	var output *models.Post
 	for _, filter := range list {
 		if link.Host != "" {
 			if filter.Match(link.Host) {
 				log.Printf("got host: %s\n", link.Host)
 				if filter.Snippet(link.Path) {
-					output = filter.Run(page)
+					output, err = filter.Run(page)
+					if err != nil {
+						return nil, err
+					}
 				}
 			}
 		}
