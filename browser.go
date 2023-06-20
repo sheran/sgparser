@@ -54,7 +54,7 @@ func (b *BrowserImpl) Run(urlToFetch string) (*models.Post, error) {
 
 	err := chromedp.Run(ctx,
 		chromedp.Navigate(newUrl),
-		chromedp.WaitVisible("body", chromedp.ByQuery),
+		chromedp.WaitReady("body"),
 		chromedp.Text(b.Title, &title),
 		chromedp.Evaluate(fmt.Sprintf(`Array.from(document.querySelectorAll("%s")).map(i => i.innerText)`, b.Body), &res),
 		chromedp.Evaluate(fmt.Sprintf(`document.querySelector("%s").src`, b.Thumb), &thumb),
