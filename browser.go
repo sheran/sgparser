@@ -38,7 +38,6 @@ func (b *BrowserImpl) Run(urlToFetch string) (*models.Post, error) {
 	ctx, cancel = chromedp.NewExecAllocator(ctx, opts...)
 	defer cancel()
 
-	// Create a new tab
 	ctx, cancel = chromedp.NewContext(
 		ctx,
 	)
@@ -87,6 +86,8 @@ func (rf *BrowserImpl) GetHost() string {
 }
 
 func formatTextBody(res []string) string {
+	// We can run further filters here to remove
+	// words or phrases based on our toml config
 	var s strings.Builder
 	for _, node := range res {
 		if len(node) > 0 {
