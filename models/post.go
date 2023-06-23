@@ -6,13 +6,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"log"
+	"time"
 )
 
 type Post struct {
-	Title string `json:"title"`
-	Body  string `json:"body"`
-	Url   string `json:"url"`
-	Thumb string `json:"thumbnail"`
+	Title string    `json:"title"`
+	Body  string    `json:"body"`
+	Url   string    `json:"url"`
+	Thumb string    `json:"thumbnail"`
+	Date  time.Time `json:"date"`
 }
 
 func (p *Post) ToJSON() ([]byte, error) {

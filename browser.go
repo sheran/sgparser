@@ -3,6 +3,7 @@ package sgparser
 import (
 	"context"
 	"fmt"
+	"html"
 	"net/url"
 	"strings"
 	"time"
@@ -48,7 +49,8 @@ func (b *BrowserImpl) Run(urlToFetch string) (*models.Post, error) {
 	var title string
 	newUrl := fixAmpSuffix(urlToFetch)
 	post := &models.Post{
-		Url: newUrl,
+		Url:  newUrl,
+		Date: time.Now().UTC(),
 	}
 
 	err := chromedp.Run(ctx,
@@ -63,7 +65,7 @@ func (b *BrowserImpl) Run(urlToFetch string) (*models.Post, error) {
 	}
 	post.Body = formatTextBody(res)
 	post.Thumb = fixAmpSuffix(thumb)
-	post.Title = title
+	post.Title = html.UnescapeString(title)
 	return post, nil
 }
 
