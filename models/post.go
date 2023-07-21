@@ -102,6 +102,15 @@ func (p *Post) SaveThumb(rootDir string) (string, error) {
 
 }
 
+func (p Post) String() string {
+	b, err := p.ToJSON()
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+	return string(b)
+}
+
 func (p *Post) ToBase64() (string, error) {
 	var b bytes.Buffer
 	gz := gzip.NewWriter(&b)
