@@ -3,6 +3,7 @@ package sgparser
 import (
 	"context"
 	"fmt"
+	"html"
 	"net/url"
 	"strings"
 	"time"
@@ -10,6 +11,42 @@ import (
 	"github.com/chromedp/chromedp"
 	"github.com/sheran/sgparser/models"
 )
+
+const script = `(function(w, n, wn) {
+	// Pass the Webdriver Test.
+	Object.defineProperty(n, 'webdriver', {
+	  get: () => false,
+	});
+  
+	// Pass the Plugins Length Test.
+	// Overwrite the plugins property to use a custom getter.
+	Object.defineProperty(n, 'plugins', {
+	  // This just needs to have length > 0 for the current test,
+	  // but we could mock the plugins too if necessary.
+	  get: () => [1, 2, 3, 4, 5],
+	});
+  
+	// Pass the Languages Test.
+	// Overwrite the plugins property to use a custom getter.
+	Object.defineProperty(n, 'languages', {
+	  get: () => ['en-US', 'en'],
+	});
+  
+	// Pass the Chrome Test.
+	// We can mock this in as much depth as we need for the test.
+	w.chrome = {
+	  runtime: {},
+	};
+  
+	// Pass the Permissions Test.
+	const originalQuery = wn.permissions.query;
+	return wn.permissions.query = (parameters) => (
+	  parameters.name === 'notifications' ?
+		Promise.resolve({ state: Notification.permission }) :
+		originalQuery(parameters)
+	);
+  
+  })(window, navigator, window.navigator);`
 
 // This is the browser package. It will use ChromeDP instead of goquery like in
 // filter.go. We will attempt to write it as we did, to use the filters files
@@ -30,7 +67,7 @@ type BrowserImpl struct {
 func (b *BrowserImpl) Run(urlToFetch string) (*models.Post, error) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("disable-dev-shm-usage", true),
-		chromedp.Flag("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"),
+		chromedp.UserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"),
 	)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
@@ -48,7 +85,8 @@ func (b *BrowserImpl) Run(urlToFetch string) (*models.Post, error) {
 	var title string
 	newUrl := fixAmpSuffix(urlToFetch)
 	post := &models.Post{
-		Url: newUrl,
+		Url:  newUrl,
+		Date: time.Now().UTC(),
 	}
 
 	if b.Thumb == "-" {
@@ -75,8 +113,10 @@ func (b *BrowserImpl) Run(urlToFetch string) (*models.Post, error) {
 	}
 
 	post.Body = formatTextBody(res)
-	post.Thumb = fixAmpSuffix(thumb)
-	post.Title = title
+	if thumb != "" {
+		post.Thumb = fixAmpSuffix(thumb)
+	}
+	post.Title = html.UnescapeString(title)
 	return post, nil
 }
 
