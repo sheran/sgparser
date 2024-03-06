@@ -51,16 +51,29 @@ func (b *BrowserImpl) Run(urlToFetch string) (*models.Post, error) {
 		Url: newUrl,
 	}
 
-	err := chromedp.Run(ctx,
-		chromedp.Navigate(newUrl),
-		chromedp.WaitReady("body"),
-		chromedp.Text(b.Title, &title),
-		chromedp.Evaluate(fmt.Sprintf(`Array.from(document.querySelectorAll("%s")).map(i => i.innerText)`, b.Body), &res),
-		chromedp.Evaluate(fmt.Sprintf(`document.querySelector("%s").src`, b.Thumb), &thumb),
-	)
-	if err != nil {
-		return nil, err
+	if b.Thumb == "-" {
+		err := chromedp.Run(ctx,
+			chromedp.Navigate(newUrl),
+			chromedp.WaitReady("body"),
+			chromedp.Text(b.Title, &title),
+			chromedp.Evaluate(fmt.Sprintf(`Array.from(document.querySelectorAll("%s")).map(i => i.innerText)`, b.Body), &res),
+		)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		err := chromedp.Run(ctx,
+			chromedp.Navigate(newUrl),
+			chromedp.WaitReady("body"),
+			chromedp.Text(b.Title, &title),
+			chromedp.Evaluate(fmt.Sprintf(`Array.from(document.querySelectorAll("%s")).map(i => i.innerText)`, b.Body), &res),
+			chromedp.Evaluate(fmt.Sprintf(`document.querySelector("%s").src`, b.Thumb), &thumb),
+		)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	post.Body = formatTextBody(res)
 	post.Thumb = fixAmpSuffix(thumb)
 	post.Title = title
