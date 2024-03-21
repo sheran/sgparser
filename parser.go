@@ -88,6 +88,8 @@ func Browse(page string, list []Browser) (*models.Post, error) {
 						return nil, err
 					}
 				}
+			} else {
+				return nil, nil
 			}
 		}
 
