@@ -87,14 +87,13 @@ func Browse(page string, list []Browser) (*models.Post, error) {
 					if err != nil {
 						return nil, err
 					}
+					return output, nil
 				}
-			} else {
-				return nil, nil
 			}
 		}
 
 	}
-	return output, nil
+	return nil, fmt.Errorf("no filter found for %s [%v]", link.Host, link)
 }
 
 func Process(page string, list []Filter) (*models.Post, error) {
